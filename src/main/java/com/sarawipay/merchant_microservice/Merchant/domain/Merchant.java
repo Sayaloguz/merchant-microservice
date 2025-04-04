@@ -1,6 +1,8 @@
 package com.sarawipay.merchant_microservice.Merchant.domain;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
 import com.sarawipay.merchant_microservice.Merchant.domain.enums.MerchantType;
 import lombok.*;
 
@@ -16,6 +18,7 @@ public class Merchant extends MainTable {
     @DynamoDBAttribute(attributeName = "address")
     private String address;
 
+    @DynamoDBTypeConvertedEnum
     @DynamoDBAttribute(attributeName = "merchantType")
     private MerchantType merchantType;
 

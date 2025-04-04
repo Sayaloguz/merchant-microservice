@@ -5,8 +5,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @DynamoDBTable(tableName = "MainTable")
 public class MainTable {
 
@@ -27,4 +27,5 @@ public class MainTable {
 
     @DynamoDBAttribute(attributeName = "createTime")
     private String createTime;
+
 }
