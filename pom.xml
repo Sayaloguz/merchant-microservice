@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.sarawipay</groupId>
-	<artifactId>client</artifactId>
+	<artifactId>merchant</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>client</name>
-	<description>Microservicio "Client" para tarea práctica</description>
+	<name>merchant</name>
+	<description>Microservicio "Merchant" para tarea práctica</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.6.0.Beta1</version>
+			<version>1.5.5.Final</version>
 		</dependency>
 
 		<!-- Swagger -->
@@ -87,6 +87,8 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+
+
 	</dependencies>
 
 	<build>
@@ -103,6 +105,11 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>1.18.20</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.5.5.Final</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
