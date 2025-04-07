@@ -31,16 +31,11 @@ public class MerchantGetUseCaseImpl implements MerchantGetUseCase {
 
     }
 
-    
+
     @Override
-    public MerchantOutputDTO getById(String id) {
+    public MerchantGenericModel getById(String id) {
 
-        Merchant merchant = merchantRepository.findById(id);
-
-        // Transformación a DTO
-        MerchantOutputDTO res = merchantMappers.merchantToOutput(merchant);
-
-        return res;
+        return merchantRepository.findById(id);
 
     }
 

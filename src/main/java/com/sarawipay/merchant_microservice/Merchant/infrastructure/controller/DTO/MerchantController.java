@@ -8,6 +8,8 @@ import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantUpdateRequestDTO;
+import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.FullMerchantOutputDTO;
+import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantIdDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
 
 
@@ -55,11 +57,24 @@ public class MerchantController {
 
 
     @GetMapping("/getById/{id}")
-    public MerchantOutputDTO getById(@PathVariable String id) {
+    public FullMerchantOutputDTO getById(@PathVariable String id) {
 
-        return merchantGetUseCase.getById(id);
+        return merchantMappers.modelToFullOutput(merchantGetUseCase.getById(id));
 
     }
+
+    @GetMapping("/getById/{id}/{simpleOutput}")
+    public MerchantIdDTO getByIdSimple(@PathVariable String id, @PathVariable String simpleOutput) {
+
+        if(simpleOutput.equalsIgnoreCase("simpleOutput")) {
+            return merchantMappers.modelToIdDTO(merchantGetUseCase.getById(id));
+        } else {
+            throw new IllegalArgumentException("Valor inválido para simpleOutput");
+        }
+
+    }
+
+
 
 
     @PutMapping("/update")

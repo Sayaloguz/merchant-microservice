@@ -9,6 +9,6 @@ public interface MerchantGetUseCase {
 
     List<MerchantGenericModel> getByName(String name);
 
-    MerchantOutputDTO getById(String id);
+    MerchantGenericModel getById(String id);
 
 }

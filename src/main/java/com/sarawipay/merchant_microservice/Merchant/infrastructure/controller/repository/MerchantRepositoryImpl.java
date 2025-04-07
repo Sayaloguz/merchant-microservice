@@ -39,7 +39,7 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
 
     @Override
-    public Merchant findById(String id) {
+    public MerchantGenericModel findById(String id) {
 
         String pkGsi = "gIndex2Pk";
 
@@ -63,7 +63,7 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
         List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
 
-        return res.get(0);
+        return merchantMappers.merchantToModel(res.get(0));
     }
 
 

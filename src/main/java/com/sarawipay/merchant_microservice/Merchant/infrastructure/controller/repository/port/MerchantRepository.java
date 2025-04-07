@@ -13,7 +13,7 @@ public interface MerchantRepository {
 
     void create(MerchantGenericModel merchantGenericModell);
 
-    Merchant findById(String id);
+    MerchantGenericModel findById(String id);
 
     List<MerchantGenericModel> findByName(String name);
 
