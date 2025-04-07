@@ -63,6 +63,10 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
         List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
 
+        if (res.isEmpty()) {
+            return null;
+        }
+
         return merchantMappers.merchantToModel(res.get(0));
     }
 
@@ -117,13 +121,6 @@ public class MerchantRepositoryImpl implements MerchantRepository {
             dynamoDBMapper.save(existingMerchant);
 
         }
-
-    }
-
-    @Override
-    public Optional<Merchant> clientMerchant(Merchant merchant) {
-
-        return Optional.empty();
 
     }
 

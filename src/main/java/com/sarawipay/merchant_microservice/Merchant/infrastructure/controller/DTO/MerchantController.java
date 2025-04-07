@@ -30,6 +30,7 @@ public class MerchantController {
     private final MerchantGetUseCaseImpl merchantGetUseCase;
 
     private final MerchantUpdateUseCase merchantUpdateUseCase;
+
     private final MerchantMappers merchantMappers;
 
 

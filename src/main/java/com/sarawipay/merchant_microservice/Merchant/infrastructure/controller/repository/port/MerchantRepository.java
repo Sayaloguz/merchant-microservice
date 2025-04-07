@@ -19,8 +19,6 @@ public interface MerchantRepository {
 
     void update(MerchantGenericModel merchantGenericModell);
 
-    Optional<Merchant> clientMerchant(Merchant merchant);
-
 }
 
 // Nota: Los dos métodos "findBy" son muy parecidos entre ellos, una posible mejora sería hacer una función genérica para los tres
