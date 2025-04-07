@@ -104,21 +104,19 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
 
     @Override
-    public Merchant update(MerchantInputDTO merchantInputDTO, String pk, String sk) {
+    public void update(MerchantGenericModel generic) {
 
-        Merchant existingMerchant = dynamoDBMapper.load(Merchant.class, pk, sk);
+        Merchant existingMerchant = dynamoDBMapper.load(Merchant.class, generic.getPk(), generic.getSk());
 
         if (existingMerchant != null) {
+            existingMerchant.setName(generic.getName());
+            existingMerchant.setAddress(generic.getAddress());
+            existingMerchant.setMerchantType(MerchantType.valueOf(generic.getMerchantType()));
 
-            existingMerchant.setName(merchantInputDTO.getName());
-            existingMerchant.setAddress(merchantInputDTO.getAddress());
-            existingMerchant.setMerchantType(MerchantType.valueOf(merchantInputDTO.getMerchantType()));
 
             dynamoDBMapper.save(existingMerchant);
 
         }
-
-        return existingMerchant;
 
     }
 

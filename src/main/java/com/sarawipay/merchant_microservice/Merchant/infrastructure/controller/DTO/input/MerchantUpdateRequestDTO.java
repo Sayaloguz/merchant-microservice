@@ -11,10 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantUpdateRequestDTO {
 
-    private MerchantInputDTO merchantInputDTO;
-
     private String pk;
 
     private String sk;
+
+    private String name;
+
+    private String address;
+
+    private String merchantType;
 
 }

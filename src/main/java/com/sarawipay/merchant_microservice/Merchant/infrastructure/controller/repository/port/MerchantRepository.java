@@ -17,7 +17,7 @@ public interface MerchantRepository {
 
     List<MerchantGenericModel> findByName(String name);
 
-    Merchant update(MerchantInputDTO merchantInputDTO, String pk, String sk);
+    void update(MerchantGenericModel merchantGenericModell);
 
     Optional<Merchant> clientMerchant(Merchant merchant);
 

@@ -4,6 +4,7 @@ import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpd
 import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
+import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantUpdateRequestDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.repository.port.MerchantRepository;
 import lombok.AllArgsConstructor;
@@ -21,12 +22,9 @@ public class MerchantUpdateUseCaseImpl implements MerchantUpdateUseCase {
     private final MerchantMappers merchantMappers;
 
     @Override
-    public MerchantOutputDTO update(MerchantInputDTO merchantInputDTO, String pk, String sk) {
+    public void update(MerchantGenericModel generic) {
 
-        Merchant merchant = merchantRepository.update(merchantInputDTO, pk, sk);
-        MerchantOutputDTO merchantOutputDTO = merchantMappers.merchantToOutput(merchant);
-
-        return merchantOutputDTO;
+        merchantRepository.update(generic);
 
     }
 

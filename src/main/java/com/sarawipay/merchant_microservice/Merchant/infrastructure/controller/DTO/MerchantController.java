@@ -78,9 +78,10 @@ public class MerchantController {
 
 
     @PutMapping("/update")
-    public MerchantOutputDTO update(@RequestBody MerchantUpdateRequestDTO merchantUpdate) {
+    public void update(@RequestBody MerchantUpdateRequestDTO merchantUpdate) {
 
-        return merchantUpdateUseCase.update(merchantUpdate.getMerchantInputDTO(), merchantUpdate.getPk(), merchantUpdate.getSk());
+        MerchantGenericModel generic = merchantMappers.updateRequestToModel(merchantUpdate);
+        merchantUpdateUseCase.update(generic);
 
     }
 
