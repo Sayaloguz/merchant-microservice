@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -67,7 +68,7 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
 
     @Override
-    public List<Merchant> findByName(String name) {
+    public List<MerchantGenericModel> findByName(String name) {
 
         String pkGsi = "gIndex2Pk"; // PK de GSI
         String lwrCaseName = name.toLowerCase(); // Comparación en minúsculas
@@ -90,7 +91,12 @@ public class MerchantRepositoryImpl implements MerchantRepository {
                 .withExpressionAttributeNames(expressionAttributeNames)
                 .withExpressionAttributeValues(expressionAtributeValues);
 
-        List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
+
+        List<Merchant> entities = dynamoDBMapper.query(Merchant.class, query);
+
+        List<MerchantGenericModel> res = entities.stream()
+                .map(merchantMappers::merchantToModel)
+                .collect(Collectors.toList());
 
         return res;
 

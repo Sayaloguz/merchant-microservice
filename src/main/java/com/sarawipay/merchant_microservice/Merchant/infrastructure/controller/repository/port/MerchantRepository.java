@@ -15,7 +15,7 @@ public interface MerchantRepository {
 
     Merchant findById(String id);
 
-    List<Merchant> findByName(String name);
+    List<MerchantGenericModel> findByName(String name);
 
     Merchant update(MerchantInputDTO merchantInputDTO, String pk, String sk);
 

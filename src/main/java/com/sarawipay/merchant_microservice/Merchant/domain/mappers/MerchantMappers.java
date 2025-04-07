@@ -20,4 +20,6 @@ public interface MerchantMappers {
 
     MerchantGenericModel inputToModel(MerchantInputDTO merchantInputDTO);
 
+    MerchantOutputDTO modelToOutput(MerchantGenericModel merchantGenericModel);
+
 }

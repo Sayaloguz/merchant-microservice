@@ -23,20 +23,15 @@ public class MerchantGetUseCaseImpl implements MerchantGetUseCase {
     private final MerchantRepository merchantRepository;
     private final MerchantMappers merchantMappers;
 
+
     @Override
-    public List<MerchantOutputDTO> getByName(String name) {
+    public List<MerchantGenericModel> getByName(String name) {
 
-        List<Merchant> res = merchantRepository.findByName(name);
-
-        // Transformación a DTO
-        List<MerchantOutputDTO> merchantOutputDTOList = res.stream()
-                .map(merchantMappers::merchantToOutput)
-                .collect(Collectors.toList());
-
-        return merchantOutputDTOList;
+        return merchantRepository.findByName(name);
 
     }
 
+    
     @Override
     public MerchantOutputDTO getById(String id) {
 

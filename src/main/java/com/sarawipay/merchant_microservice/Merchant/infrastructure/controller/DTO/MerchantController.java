@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -42,7 +43,13 @@ public class MerchantController {
     @GetMapping("/getByName/{name}")
     public List<MerchantOutputDTO> getByName(@PathVariable String name) {
 
-        return merchantGetUseCase.getByName(name);
+        List<MerchantGenericModel> res = merchantGetUseCase.getByName(name);
+
+        List<MerchantOutputDTO> merchantOutputDTOList = res.stream()
+                .map(merchantMappers::modelToOutput)
+                .collect(Collectors.toList());
+
+        return merchantOutputDTOList;
 
     }
 
