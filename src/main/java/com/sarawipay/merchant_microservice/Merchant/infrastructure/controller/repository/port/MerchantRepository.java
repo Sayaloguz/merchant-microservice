@@ -1,5 +1,6 @@
 package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.repository.port;
 
+import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericModel;
 import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface MerchantRepository {
 
-    Merchant create(Merchant merchant);
+    void create(MerchantGenericModel merchantGenericModell);
 
     Merchant findById(String id);
 

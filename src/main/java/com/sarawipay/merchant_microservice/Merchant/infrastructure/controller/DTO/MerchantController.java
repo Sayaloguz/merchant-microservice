@@ -1,9 +1,11 @@
 package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO;
 
+import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericModel;
 import com.sarawipay.merchant_microservice.Merchant.application.MerchantGetUseCaseImpl;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantAddUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpdateUseCase;
 import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
+import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantUpdateRequestDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
@@ -25,12 +27,14 @@ public class MerchantController {
     private final MerchantGetUseCaseImpl merchantGetUseCase;
 
     private final MerchantUpdateUseCase merchantUpdateUseCase;
+    private final MerchantMappers merchantMappers;
 
 
-    @PostMapping("/create/{idClient}")
-    public Merchant addMerchant(@Valid @RequestBody MerchantInputDTO clientInputDTO, @PathVariable String idClient) {
+    @PostMapping("/create")
+    public void addMerchant(@Valid @RequestBody MerchantInputDTO merchantInputDTO) {
 
-        return merchantAddUseCase.addMerchant(clientInputDTO, idClient);
+        MerchantGenericModel generic = merchantMappers.inputToModel(merchantInputDTO);
+        merchantAddUseCase.addMerchant(generic);
 
     }
 

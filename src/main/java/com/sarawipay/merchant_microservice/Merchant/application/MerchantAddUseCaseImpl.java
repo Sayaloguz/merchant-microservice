@@ -23,24 +23,20 @@ public class MerchantAddUseCaseImpl implements MerchantAddUseCase {
     private final MerchantMappers merchantMappers;
 
     @Override
-    public Merchant addMerchant(MerchantInputDTO merchantInputDTO, String idClient) {
-
-        Merchant merchant = merchantMappers.inputToMerchant(merchantInputDTO);
+    public void addMerchant(MerchantGenericModel generic) {
 
         String id = UUID.randomUUID().toString();
 
 
-        merchant.setId(id);
-        merchant.setPk("merchant#" + id);
-        merchant.setSk(idClient); // Lo propio sería comprobar que el cliente existiera, pero por agilizar me salto esa parte
-        merchant.setStatus("ACTIVE");
-        merchant.setCreateTime(String.valueOf(new Date()));
-        merchant.setGIndex2Pk("entityMerchant");
+        generic.setId(id);
+        generic.setPk("merchant#" + id);
+        generic.setSk(UUID.randomUUID().toString()); // Lo propio sería comprobar que el cliente existiera, pero por agilizar me salto esa parte
+        generic.setStatus("ACTIVE");
+        generic.setCreateTime(String.valueOf(new Date()));
+        generic.setGIndex2Pk("entityMerchant");
 
 
-        merchantRepository.create(merchant);
-
-        return merchant;
+        merchantRepository.create(generic);
     }
 
 }

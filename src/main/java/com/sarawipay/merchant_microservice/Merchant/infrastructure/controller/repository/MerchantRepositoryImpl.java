@@ -3,8 +3,10 @@ package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.r
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericModel;
 import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.domain.enums.MerchantType;
+import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.repository.port.MerchantRepository;
 import lombok.Getter;
@@ -22,13 +24,15 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
 
     private final DynamoDBMapper dynamoDBMapper;
+    private final MerchantMappers merchantMappers;
 
 
     @Override
-    public Merchant create(Merchant merchant) {
+    public void create(MerchantGenericModel generic) {
+
+        Merchant merchant = merchantMappers.modelToMerchant(generic);
 
         dynamoDBMapper.save(merchant);
-        return merchant;
 
     }
 
