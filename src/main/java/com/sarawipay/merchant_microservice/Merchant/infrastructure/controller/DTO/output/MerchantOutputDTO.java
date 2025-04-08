@@ -1,8 +1,5 @@
 package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
-import com.sarawipay.merchant_microservice.Merchant.domain.enums.MerchantType;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

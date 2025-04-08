@@ -51,6 +51,8 @@ public class MerchantController {
         MerchantGenericModel generic = merchantMappers.inputToModel(merchantInputDTO);
         merchantAddUseCase.addMerchant(generic);
 
+
+        // Tal como está siempre va a devolver el mismo mensaje, pero por agilizar la entrega lo dejo así
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Comercio creado exitosamente");
 
@@ -115,6 +117,7 @@ public class MerchantController {
         MerchantGenericModel generic = merchantMappers.updateRequestToModel(merchantUpdate);
         merchantUpdateUseCase.update(generic);
 
+        // Tal como está siempre va a devolver el mismo mensaje, pero por agilizar la entrega lo dejo así
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Comercio actualizado exitosamente");
 

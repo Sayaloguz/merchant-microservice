@@ -31,6 +31,7 @@ public class MerchantRepositoryImpl implements MerchantRepository {
     @Override
     public void create(MerchantGenericModel generic) {
 
+        generic.setName(generic.getName().toLowerCase());
         Merchant merchant = merchantMappers.modelToMerchant(generic);
 
         dynamoDBMapper.save(merchant);
@@ -113,7 +114,7 @@ public class MerchantRepositoryImpl implements MerchantRepository {
         Merchant existingMerchant = dynamoDBMapper.load(Merchant.class, generic.getPk(), generic.getSk());
 
         if (existingMerchant != null) {
-            existingMerchant.setName(generic.getName());
+            existingMerchant.setName(generic.getName().toLowerCase());
             existingMerchant.setAddress(generic.getAddress());
             existingMerchant.setMerchantType(MerchantType.valueOf(generic.getMerchantType()));
 
