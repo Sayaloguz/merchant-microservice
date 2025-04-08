@@ -1,10 +1,9 @@
-package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO;
+package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller;
 
 import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericModel;
 import com.sarawipay.merchant_microservice.Merchant.application.MerchantGetUseCaseImpl;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantAddUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpdateUseCase;
-import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantUpdateRequestDTO;
@@ -13,13 +12,19 @@ import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DT
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
 
 
+import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
 
+@Api(value = "API REST del microservicio de merchants")
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
@@ -35,16 +40,29 @@ public class MerchantController {
 
 
     @PostMapping("/create")
-    public void addMerchant(@Valid @RequestBody MerchantInputDTO merchantInputDTO) {
+    @ApiOperation(value = "Crear un nuevo merchant")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Comercio creado exitosamente", response = Map.class),
+    })
+    public ResponseEntity<Map<String, Object>> addMerchant(
+            @ApiParam(value = "Datos del merchant a crear", required = true)
+            @Valid @RequestBody MerchantInputDTO merchantInputDTO) {
 
         MerchantGenericModel generic = merchantMappers.inputToModel(merchantInputDTO);
         merchantAddUseCase.addMerchant(generic);
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Comercio creado exitosamente");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
     @GetMapping("/getByName/{name}")
-    public List<MerchantOutputDTO> getByName(@PathVariable String name) {
+    @ApiOperation(value = "Buscar merchants por nombre")
+    public List<MerchantOutputDTO> getByName(
+            @ApiParam(value = "Nombre del merchant a buscar", required = true)
+            @PathVariable String name) {
 
         List<MerchantGenericModel> res = merchantGetUseCase.getByName(name);
 
@@ -58,16 +76,25 @@ public class MerchantController {
 
 
     @GetMapping("/getById/{id}")
-    public FullMerchantOutputDTO getById(@PathVariable String id) {
+    @ApiOperation(value = "Buscar merchant por ID")
+    public FullMerchantOutputDTO getById(
+            @ApiParam(value = "ID del merchant a buscar", required = true)
+            @PathVariable String id) {
 
         return merchantMappers.modelToFullOutput(merchantGetUseCase.getById(id));
 
     }
 
-    @GetMapping("/getById/{id}/{simpleOutput}")
-    public MerchantIdDTO getByIdSimple(@PathVariable String id, @PathVariable String simpleOutput) {
 
-        if(simpleOutput.equalsIgnoreCase("simpleOutput")) {
+    @GetMapping("/getById/{id}/{simpleOutput}")
+    @ApiOperation(value = "Buscar merchant por ID con salida simple")
+    public MerchantIdDTO getByIdSimple(
+            @ApiParam(value = "ID del merchant a buscar", required = true)
+            @PathVariable String id,
+            @ApiParam(value = "Tipo de salida", required = true)
+            @PathVariable String simpleOutput) {
+
+        if (simpleOutput.equalsIgnoreCase("simpleOutput")) {
             return merchantMappers.modelToIdDTO(merchantGetUseCase.getById(id));
         } else {
             throw new IllegalArgumentException("Valor inválido para simpleOutput");
@@ -76,13 +103,22 @@ public class MerchantController {
     }
 
 
-
-
     @PutMapping("/update")
-    public void update(@RequestBody MerchantUpdateRequestDTO merchantUpdate) {
+    @ApiOperation(value = "Actualizar un merchant")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Comercio actualizado exitosamente", response = Map.class),
+    })
+    public ResponseEntity<Map<String, Object>> update(
+            @ApiParam(value = "Datos del merchant a actualizar", required = true)
+            @RequestBody MerchantUpdateRequestDTO merchantUpdate) {
 
         MerchantGenericModel generic = merchantMappers.updateRequestToModel(merchantUpdate);
         merchantUpdateUseCase.update(generic);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Comercio actualizado exitosamente");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }
 
