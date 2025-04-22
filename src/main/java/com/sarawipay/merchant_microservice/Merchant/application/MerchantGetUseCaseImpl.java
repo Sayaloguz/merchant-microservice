@@ -35,4 +35,10 @@ public class MerchantGetUseCaseImpl implements MerchantGetUseCase {
 
     }
 
+    @Override
+    public List<MerchantGenericModel> getAllMerchants() {
+
+        return merchantRepository.findAll();
+    }
+
 }

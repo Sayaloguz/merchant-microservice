@@ -125,4 +125,33 @@ public class MerchantRepositoryImpl implements MerchantRepository {
 
     }
 
+
+    @Override
+    public List<MerchantGenericModel> findAll() {
+
+        String pkGsi = "gIndex2Pk"; // PK de GSI
+
+        Map<String, String> expressionAttributeNames = new HashMap<>(); // Evita posibles conflictos con palabras reservadas
+        expressionAttributeNames.put("#pkAttr", pkGsi);
+
+        Map<String, AttributeValue> expressionAtributeValues = new HashMap<>();
+        expressionAtributeValues.put(":pkVal", new AttributeValue().withS("entityMerchant")); // Solo buscamos comercios
+
+        DynamoDBQueryExpression<Merchant> query = new DynamoDBQueryExpression<Merchant>()
+                .withIndexName("gIndex2Pk")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("#pkAttr = :pkVal")
+                // Asignación de nombres y valores
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(expressionAtributeValues);
+
+        List<Merchant> entities = dynamoDBMapper.query(Merchant.class, query);
+        List<MerchantGenericModel> res = entities.stream()
+                .map(merchantMappers::merchantToModel)
+                .collect(Collectors.toList());
+
+        return res;
+
+    }
+
 }

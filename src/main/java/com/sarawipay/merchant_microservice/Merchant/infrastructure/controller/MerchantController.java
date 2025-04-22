@@ -125,4 +125,18 @@ public class MerchantController {
 
     }
 
+    @GetMapping("/getMerchants")
+    @ApiOperation(value = "Obtener todos los merchants")
+    public List<MerchantOutputDTO> getAllMerchants() {
+
+        List<MerchantGenericModel> res = merchantGetUseCase.getAllMerchants();
+
+        List<MerchantOutputDTO> merchantOutputDTOList = res.stream()
+                .map(merchantMappers::modelToOutput)
+                .collect(Collectors.toList());
+
+        return merchantOutputDTOList;
+
+    }
+
 }
