@@ -28,4 +28,25 @@ public class MerchantOutputDTO {
         this.name = sb.toString();
     }
 
+    public void setMerchantType(String merchantType) {
+        String prefix = "MERCHANT_TYPE_";
+        if (!merchantType.startsWith(prefix)) {
+            throw new IllegalArgumentException("Invalid merchant type");
+        }
+        String merchantTypeWithoutPrefix = merchantType.substring(prefix.length());
+
+        String[] words = merchantTypeWithoutPrefix.split("_");
+
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()){
+                sb.append(word.substring(0, 1).toUpperCase());
+                sb.append(word.substring(1).toLowerCase());
+                sb.append(" ");
+            }
+        }
+
+        this.merchantType = sb.toString().trim();
+    }
+
 }
