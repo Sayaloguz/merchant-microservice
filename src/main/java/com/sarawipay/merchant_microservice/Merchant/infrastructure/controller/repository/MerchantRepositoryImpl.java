@@ -7,7 +7,6 @@ import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericM
 import com.sarawipay.merchant_microservice.Merchant.domain.Merchant;
 import com.sarawipay.merchant_microservice.Merchant.domain.enums.MerchantType;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
-import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.repository.port.MerchantRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -151,6 +150,37 @@ public class MerchantRepositoryImpl implements MerchantRepository {
                 .collect(Collectors.toList());
 
         return res;
+
+    }
+
+    @Override
+    public void delete(String id) {
+
+        String pkGsi = "gIndex2Pk";
+
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        expressionAttributeNames.put("#pkAttr", pkGsi);
+        expressionAttributeNames.put("#idAttr", "id");
+
+        Map<String, AttributeValue> expressionAtributeValues = new HashMap<>();
+        expressionAtributeValues.put(":pkVal", new AttributeValue().withS("entityMerchant")); // Solo buscamos merchant
+        expressionAtributeValues.put(":id", new AttributeValue().withS(id));
+
+
+        DynamoDBQueryExpression<Merchant> query = new DynamoDBQueryExpression<Merchant>()
+                .withIndexName("gIndex2Pk")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("#pkAttr = :pkVal")
+                .withFilterExpression("#idAttr = :id")
+                // Asignación de nombres y valores
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(expressionAtributeValues);
+
+        List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
+
+        Merchant merchant = res.get(0);
+
+        dynamoDBMapper.delete(merchant);
 
     }
 

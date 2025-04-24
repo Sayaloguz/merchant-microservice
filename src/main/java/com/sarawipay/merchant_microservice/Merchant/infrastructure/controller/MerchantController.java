@@ -3,6 +3,7 @@ package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller;
 import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericModel;
 import com.sarawipay.merchant_microservice.Merchant.application.MerchantGetUseCaseImpl;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantAddUseCase;
+import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantDeleteUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpdateUseCase;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
@@ -35,6 +36,8 @@ public class MerchantController {
     private final MerchantGetUseCaseImpl merchantGetUseCase;
 
     private final MerchantUpdateUseCase merchantUpdateUseCase;
+
+    private final MerchantDeleteUseCase merchantDeleteUseCase;
 
     private final MerchantMappers merchantMappers;
 
@@ -149,6 +152,16 @@ public class MerchantController {
                 .collect(Collectors.toList());
 
         return merchantOutputDTOList;
+
+    }
+
+    @DeleteMapping("/deleteMerchant/{id}")
+    @ApiOperation(value = "Eliminar un merchant")
+    public void deleteMerchant(
+            @ApiParam(value = "ID del merchant a eliminar", required = true)
+            @PathVariable String id) {
+
+        merchantDeleteUseCase.deleteMerchant(id);
 
     }
 

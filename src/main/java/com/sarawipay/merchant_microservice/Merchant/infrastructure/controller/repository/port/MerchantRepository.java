@@ -20,6 +20,8 @@ public interface MerchantRepository {
     void update(MerchantGenericModel merchantGenericModell);
 
     List<MerchantGenericModel> findAll();
+
+    void delete(String id);
 }
 
 // Nota: Los dos métodos "findBy" son muy parecidos entre ellos, una posible mejora sería hacer una función genérica para los tres
