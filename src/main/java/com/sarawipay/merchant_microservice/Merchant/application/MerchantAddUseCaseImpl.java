@@ -33,7 +33,6 @@ public class MerchantAddUseCaseImpl implements MerchantAddUseCase {
         generic.setCreateTime(String.valueOf(new Date()));
         generic.setGIndex2Pk("entityMerchant");
 
-
         merchantRepository.create(generic);
     }
 

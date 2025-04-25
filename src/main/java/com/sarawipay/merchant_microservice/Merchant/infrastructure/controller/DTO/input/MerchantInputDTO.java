@@ -1,5 +1,6 @@
 package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.*;
@@ -18,6 +19,10 @@ public class MerchantInputDTO {
 
     @NotBlank(message = "El tipo de comercio es obligatorio")
     private String merchantType;
+
+    @NotBlank(message = "El cliente asignado es obligatorio")
+    @JsonProperty("gIndexClient")
+    private String gIndexClient;
 
 
 }

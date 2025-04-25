@@ -17,6 +17,8 @@ public class MerchantOutputDTO {
 
     private String merchantType;
 
+    private String gIndexClient;
+
 
     // Necesitamos este setter para poder convertir el nombre a minúsculas
     public void setName(String name) {

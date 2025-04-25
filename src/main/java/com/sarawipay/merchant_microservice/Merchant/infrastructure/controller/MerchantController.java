@@ -51,6 +51,7 @@ public class MerchantController {
             @ApiParam(value = "Datos del merchant a crear", required = true)
             @Valid @RequestBody MerchantInputDTO merchantInputDTO) {
 
+        System.out.println(merchantInputDTO.toString());
         MerchantGenericModel generic = merchantMappers.inputToModel(merchantInputDTO);
         merchantAddUseCase.addMerchant(generic);
 

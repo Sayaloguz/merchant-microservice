@@ -21,4 +21,6 @@ public class MerchantUpdateRequestDTO {
 
     private String merchantType;
 
+    private String gIndexClient;
+
 }

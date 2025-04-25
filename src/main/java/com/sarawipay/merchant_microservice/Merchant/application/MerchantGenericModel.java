@@ -20,5 +20,6 @@ public class MerchantGenericModel {
     private String name;
     private String address;
     private String merchantType;
+    private String gIndexClient;
 
 }
