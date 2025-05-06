@@ -6,6 +6,7 @@ import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantAdd
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantDeleteUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpdateUseCase;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
+import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.IdInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantUpdateRequestDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.FullMerchantOutputDTO;
@@ -165,6 +166,25 @@ public class MerchantController {
         merchantDeleteUseCase.deleteMerchant(id);
 
     }
+
+    @GetMapping("/getMerchantsByClientId")
+    @ApiOperation(value = "Obtener todos los merchants de un cliente")
+    public List<FullMerchantOutputDTO> getMerchantsByClientId(
+            @ApiParam(value = "ID del cliente", required = true)
+            @RequestBody IdInputDTO idInputDTO) {
+
+        System.out.println("ID del cliente: " + idInputDTO.getId());
+        List<MerchantGenericModel> res = merchantGetUseCase.findMerchantsByClientId(idInputDTO.getId());
+
+        List<FullMerchantOutputDTO> merchantOutputDTOList = res.stream()
+                .map(merchantMappers::modelToFullOutput)
+                .collect(Collectors.toList());
+
+        return merchantOutputDTOList;
+
+    }
+
+
 
 }
 

@@ -11,7 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FullMerchantOutputDTO {
 
-
+    private String pk;
+    private String sk;
     private String id;
     private String status;
     private String createTime;

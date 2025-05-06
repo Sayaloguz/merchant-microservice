@@ -1,6 +1,5 @@
 package com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,17 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MerchantUpdateRequestDTO {
-
+public class IdInputDTO {
     private String id;
-
-    private String name;
-
-    private String address;
-
-    private String merchantType;
-
-    //@JsonProperty("gIndexClient")
-    private String gIndexClient;
-
 }

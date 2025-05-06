@@ -11,6 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchantOutputDTO {
 
+    private String pk;
+
+    private String sk;
+
+    private String id;
+
     private String name;
 
     private String address;

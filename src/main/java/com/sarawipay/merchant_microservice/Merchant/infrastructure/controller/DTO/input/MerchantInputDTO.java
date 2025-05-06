@@ -21,7 +21,7 @@ public class MerchantInputDTO {
     private String merchantType;
 
     @NotBlank(message = "El cliente asignado es obligatorio")
-    @JsonProperty("gIndexClient")
+    //@JsonProperty("gIndexClient")
     private String gIndexClient;
 
 

@@ -22,6 +22,8 @@ public interface MerchantRepository {
     List<MerchantGenericModel> findAll();
 
     void delete(String id);
+
+    List<MerchantGenericModel> findMerchantsByClientId(String clientId);
 }
 
 // Nota: Los dos métodos "findBy" son muy parecidos entre ellos, una posible mejora sería hacer una función genérica para los tres

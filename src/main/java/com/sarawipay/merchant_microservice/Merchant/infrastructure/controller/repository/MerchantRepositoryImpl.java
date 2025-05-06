@@ -110,7 +110,11 @@ public class MerchantRepositoryImpl implements MerchantRepository {
     @Override
     public void update(MerchantGenericModel generic) {
 
-        Merchant existingMerchant = dynamoDBMapper.load(Merchant.class, generic.getPk(), generic.getSk());
+        // Recuperamos el merchant a través de la id recibida
+
+        Merchant existingMerchant = merchantMappers.modelToMerchant(this.findById(generic.getId()));
+
+        // Merchant existingMerchant = dynamoDBMapper.load(Merchant.class, generic.getPk(), generic.getSk());
 
         if (existingMerchant != null) {
             existingMerchant.setName(generic.getName().toLowerCase());
@@ -183,5 +187,63 @@ public class MerchantRepositoryImpl implements MerchantRepository {
         dynamoDBMapper.delete(merchant);
 
     }
+
+    /*
+
+    @Override
+    public List<MerchantGenericModel> findMerchantsByClientId(String clientId) {
+
+        String pkGsi = "gindexClient"; // PK de GSI
+
+        Map<String, String> expressionAttributeNames = new HashMap<>(); // Evita posibles conflictos con palabras reservadas
+        expressionAttributeNames.put("#pkAttr", pkGsi);
+        expressionAttributeNames.put("#clientIdAttr", "clientId");
+
+        Map<String, AttributeValue> expressionAtributeValues = new HashMap<>();
+        expressionAtributeValues.put(":pkVal", new AttributeValue().withS("gindexClient")); // Solo buscamos comercios
+        expressionAtributeValues.put(":clientId", new AttributeValue().withS(clientId));
+
+        DynamoDBQueryExpression<Merchant> query = new DynamoDBQueryExpression<Merchant>()
+                .withIndexName("gindexClient")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("#pkAttr = :pkVal")
+                .withFilterExpression("#clientIdAttr = :clientId")
+                // Asignación de nombres y valores
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(expressionAtributeValues);
+
+        List<Merchant> entities = dynamoDBMapper.query(Merchant.class, query);
+        List<MerchantGenericModel> res = entities.stream()
+                .map(merchantMappers::merchantToModel)
+                .collect(Collectors.toList());
+        return res;
+    }
+    */
+
+    // EL que tenía en client
+
+
+    public List<MerchantGenericModel> findMerchantsByClientId(String clientId) {
+
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        expressionAttributeNames.put("#gsiPk", "gIndexClient");
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":gsiPkVal", new AttributeValue().withS(clientId));
+
+        DynamoDBQueryExpression<Merchant> query = new DynamoDBQueryExpression<Merchant>()
+                .withIndexName("gIndexClient")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("#gsiPk = :gsiPkVal")
+                .withExpressionAttributeNames(expressionAttributeNames)
+                .withExpressionAttributeValues(expressionAttributeValues);
+
+        List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
+
+        return res.stream()
+                .map(merchantMappers::merchantToModel)
+                .collect(Collectors.toList());
+    }
+
 
 }

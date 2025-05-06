@@ -41,4 +41,11 @@ public class MerchantGetUseCaseImpl implements MerchantGetUseCase {
         return merchantRepository.findAll();
     }
 
+    @Override
+    public List<MerchantGenericModel> findMerchantsByClientId(String clientId) {
+
+        return merchantRepository.findMerchantsByClientId(clientId);
+
+    }
+
 }
