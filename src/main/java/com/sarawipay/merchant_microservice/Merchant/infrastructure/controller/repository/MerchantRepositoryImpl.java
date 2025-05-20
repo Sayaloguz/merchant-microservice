@@ -172,11 +172,13 @@ public class MerchantRepositoryImpl implements MerchantRepository {
         Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
         expressionAttributeValues.put(":gsiPkVal", new AttributeValue().withS(clientId));
 
+
         DynamoDBQueryExpression<Merchant> query = new DynamoDBQueryExpression<Merchant>()
                 .withIndexName("gIndexClient")
                 .withConsistentRead(false)
                 .withKeyConditionExpression("gIndexClient = :gsiPkVal")
                 .withExpressionAttributeValues(expressionAttributeValues);
+
 
         List<Merchant> res = dynamoDBMapper.query(Merchant.class, query);
 

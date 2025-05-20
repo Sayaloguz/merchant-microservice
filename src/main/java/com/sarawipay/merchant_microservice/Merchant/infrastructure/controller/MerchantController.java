@@ -15,6 +15,7 @@ import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DT
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
 
 
+import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantTypesDTO;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -177,7 +178,7 @@ public class MerchantController {
     */
 
 
-    @GetMapping("/getMerchantsByClientId")
+    @GetMapping("/getByClientId")
     @ApiOperation(value = "Obtener todos los merchants de un cliente")
     public List<FullMerchantOutputDTO> getMerchantsByClientId(
             @ApiParam(value = "ID del cliente", required = true)
@@ -195,6 +196,16 @@ public class MerchantController {
 
     // TODO: Hacer un EP para devolver todos los tipos de merchant para refinar las partes involucradas en front
 
+
+    @GetMapping("/types")
+    public GenericResponseEntity<MerchantTypesDTO> getAllMerchantTypes() {
+
+        return new GenericResponseEntity<>(
+                "Listado de merchant obtenido con éxito.",
+                String.valueOf(HttpStatus.OK),
+                merchantGetUseCase.getAllMerchantTypes()
+        );
+    }
 
 }
 
