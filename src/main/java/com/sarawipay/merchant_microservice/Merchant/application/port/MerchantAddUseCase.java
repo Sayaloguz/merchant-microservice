@@ -4,6 +4,6 @@ import com.sarawipay.merchant_microservice.Merchant.application.MerchantGenericM
 
 public interface MerchantAddUseCase {
 
-    void addMerchant(MerchantGenericModel merchantGenericModel);
+    MerchantGenericModel addMerchant(MerchantGenericModel merchantGenericModel);
 
 }

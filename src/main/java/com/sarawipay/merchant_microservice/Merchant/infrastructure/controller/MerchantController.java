@@ -5,6 +5,7 @@ import com.sarawipay.merchant_microservice.Merchant.application.MerchantGetUseCa
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantAddUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantDeleteUseCase;
 import com.sarawipay.merchant_microservice.Merchant.application.port.MerchantUpdateUseCase;
+import com.sarawipay.merchant_microservice.Merchant.domain.GenericResponseEntity;
 import com.sarawipay.merchant_microservice.Merchant.domain.mappers.MerchantMappers;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.IdInputDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.input.MerchantInputDTO;
@@ -17,14 +18,12 @@ import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DT
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Map;
-import java.util.HashMap;
 
 @Api(value = "API REST del microservicio de merchants")
 @RestController
@@ -33,13 +32,9 @@ import java.util.HashMap;
 public class MerchantController {
 
     private final MerchantAddUseCase merchantAddUseCase;
-
     private final MerchantGetUseCaseImpl merchantGetUseCase;
-
     private final MerchantUpdateUseCase merchantUpdateUseCase;
-
     private final MerchantDeleteUseCase merchantDeleteUseCase;
-
     private final MerchantMappers merchantMappers;
 
 
@@ -48,20 +43,14 @@ public class MerchantController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Comercio creado exitosamente", response = Map.class),
     })
-    public ResponseEntity<Map<String, Object>> addMerchant(
+    public FullMerchantOutputDTO addMerchant(
+
             @ApiParam(value = "Datos del merchant a crear", required = true)
             @Valid @RequestBody MerchantInputDTO merchantInputDTO) {
 
-        System.out.println(merchantInputDTO.toString());
         MerchantGenericModel generic = merchantMappers.inputToModel(merchantInputDTO);
-        merchantAddUseCase.addMerchant(generic);
 
-
-        // Tal como está siempre va a devolver el mismo mensaje, pero por agilizar la entrega lo dejo así
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Comercio creado exitosamente");
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return merchantMappers.modelToFullOutput(merchantAddUseCase.addMerchant(generic));
     }
 
 
@@ -115,36 +104,21 @@ public class MerchantController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Comercio actualizado exitosamente", response = Map.class),
     })
-    public ResponseEntity<Map<String, Object>> update(
+    public FullMerchantOutputDTO update(
+
             @ApiParam(value = "Datos del merchant a actualizar", required = true)
             @RequestBody MerchantUpdateRequestDTO merchantUpdate) {
 
         MerchantGenericModel generic = merchantMappers.updateRequestToModel(merchantUpdate);
         merchantUpdateUseCase.update(generic);
 
-        // Tal como está siempre va a devolver el mismo mensaje, pero por agilizar la entrega lo dejo así
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Comercio actualizado exitosamente");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
+        return merchantMappers.modelToFullOutput(merchantUpdateUseCase.update(generic));
     }
+
 
     @GetMapping("/getMerchants")
     @ApiOperation(value = "Obtener todos los merchants")
-    /*
-    public List<MerchantOutputDTO> getAllMerchants() {
-
-        List<MerchantGenericModel> res = merchantGetUseCase.getAllMerchants();
-
-        List<MerchantOutputDTO> merchantOutputDTOList = res.stream()
-                .map(merchantMappers::modelToOutput)
-                .collect(Collectors.toList());
-
-        return merchantOutputDTOList;
-
-    }
-    */
     public List<FullMerchantOutputDTO> getAllMerchants() {
 
         List<MerchantGenericModel> res = merchantGetUseCase.getAllMerchants();
@@ -157,15 +131,51 @@ public class MerchantController {
 
     }
 
+
     @DeleteMapping("/deleteMerchant/{id}")
     @ApiOperation(value = "Eliminar un merchant")
-    public void deleteMerchant(
+    public GenericResponseEntity<MerchantOutputDTO> deleteMerchant(
             @ApiParam(value = "ID del merchant a eliminar", required = true)
             @PathVariable String id) {
 
-        merchantDeleteUseCase.deleteMerchant(id);
+        MerchantOutputDTO deletedMerchant = merchantMappers.modelToOutput(
+                merchantDeleteUseCase.delete(id)
+        );
 
+        return new GenericResponseEntity<>(
+                "Merchant borrado con éxito.",
+                String.valueOf(HttpStatus.NO_CONTENT.value()),
+                deletedMerchant
+        );
     }
+
+    /*
+    @DeleteMapping("/deleteMerchant/{id}")
+    @ApiOperation(value = "Eliminar un merchant")
+    public GenericResponseEntity<MerchantOutputDTO> deleteMerchant(
+            @ApiParam(value = "ID del merchant a eliminar", required = true)
+            @PathVariable String id) {
+
+
+        MerchantOutputDTO deletedMerchant = merchantMappers.modelToOutput(merchantDeleteUseCase.delete(id));
+
+        if (deletedMerchant != null) {
+            return new GenericResponseEntity<MerchantOutputDTO>(
+                    "Merchant borrado con éxito.",
+                    String.valueOf(HttpStatus.NO_CONTENT.value()),
+                    deletedMerchant
+            );
+        } else {
+            return new GenericResponseEntity<MerchantOutputDTO>(
+                    "Merchant no encontrado.",
+                    String.valueOf(HttpStatus.NOT_FOUND.value()),
+                    null
+
+            );
+        }
+    }
+    */
+
 
     @GetMapping("/getMerchantsByClientId")
     @ApiOperation(value = "Obtener todos los merchants de un cliente")
@@ -173,7 +183,6 @@ public class MerchantController {
             @ApiParam(value = "ID del cliente", required = true)
             @RequestBody IdInputDTO idInputDTO) {
 
-        System.out.println("ID del cliente: " + idInputDTO.getId());
         List<MerchantGenericModel> res = merchantGetUseCase.findMerchantsByClientId(idInputDTO.getId());
 
         List<FullMerchantOutputDTO> merchantOutputDTOList = res.stream()
@@ -184,6 +193,7 @@ public class MerchantController {
 
     }
 
+    // TODO: Hacer un EP para devolver todos los tipos de merchant para refinar las partes involucradas en front
 
 
 }

@@ -15,9 +15,7 @@ public class MerchantDeleteUseCaseImpl implements MerchantDeleteUseCase {
 
     private final MerchantRepository merchantRepository;
 
-
-    @Override
-    public void deleteMerchant(String id) {
-        merchantRepository.delete(id);
+    public MerchantGenericModel delete(String id){
+        return merchantRepository.deleteMerchant(id);
     }
 }

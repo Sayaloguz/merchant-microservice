@@ -26,16 +26,10 @@ public class MerchantOutputDTO {
     private String gIndexClient;
 
 
-    // Necesitamos este setter para poder convertir el nombre a minúsculas
-    public void setName(String name) {
+    // TODO: (Consejo César) Dos atributos para nombre merchant, uno para mostrar y otro para búsqueda
 
-        StringBuilder sb = new StringBuilder(name.length());
-        sb.append(Character.toUpperCase(name.charAt(0)));
-        sb.append(name.substring(1).toLowerCase());
 
-        this.name = sb.toString();
-    }
-
+    /*
     public void setMerchantType(String merchantType) {
         String prefix = "MERCHANT_TYPE_";
         if (!merchantType.startsWith(prefix)) {
@@ -56,5 +50,7 @@ public class MerchantOutputDTO {
 
         this.merchantType = sb.toString().trim();
     }
+    */
+
 
 }

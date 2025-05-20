@@ -19,9 +19,9 @@ public class MerchantUpdateUseCaseImpl implements MerchantUpdateUseCase {
 
 
     @Override
-    public void update(MerchantGenericModel generic) {
+    public MerchantGenericModel update(MerchantGenericModel generic) {
 
-        merchantRepository.update(generic);
+        return merchantRepository.update(generic);
 
     }
 

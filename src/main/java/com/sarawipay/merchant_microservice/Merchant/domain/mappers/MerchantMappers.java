@@ -8,6 +8,8 @@ import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DT
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantIdDTO;
 import com.sarawipay.merchant_microservice.Merchant.infrastructure.controller.DTO.output.MerchantOutputDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 
 @Mapper(componentModel = "spring")
@@ -19,11 +21,23 @@ public interface MerchantMappers {
 
     MerchantGenericModel inputToModel(MerchantInputDTO merchantInputDTO);
 
-    MerchantOutputDTO modelToOutput(MerchantGenericModel merchantGenericModel);
-
-    FullMerchantOutputDTO modelToFullOutput(MerchantGenericModel merchantGenericModel);
-
     MerchantIdDTO modelToIdDTO(MerchantGenericModel merchantGenericModel);
 
     MerchantGenericModel updateRequestToModel(MerchantUpdateRequestDTO merchantUpdateRequestDTO);
+
+    @Mapping(target = "name", source = "name", qualifiedByName = "capitalizeName")
+    MerchantOutputDTO modelToOutput(MerchantGenericModel merchantGenericModel);
+
+    @Mapping(target = "name", source = "name", qualifiedByName = "capitalizeName")
+    FullMerchantOutputDTO modelToFullOutput(MerchantGenericModel merchantGenericModel);
+
+
+    @Named("capitalizeName")
+    public static String capitalizeName(String name) {
+        if (name == null || name.isEmpty()) {
+            return name;
+        }
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase();
+    }
 }
+
