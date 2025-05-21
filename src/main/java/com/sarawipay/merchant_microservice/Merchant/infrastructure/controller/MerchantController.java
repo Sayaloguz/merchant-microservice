@@ -55,6 +55,7 @@ public class MerchantController {
     }
 
 
+
     @GetMapping("/getByName/{name}")
     @ApiOperation(value = "Buscar merchants por nombre")
     public List<MerchantOutputDTO> getByName(
@@ -72,6 +73,7 @@ public class MerchantController {
     }
 
 
+
     @GetMapping("/getById/{id}")
     @ApiOperation(value = "Buscar merchant por ID")
     public FullMerchantOutputDTO getById(
@@ -81,6 +83,7 @@ public class MerchantController {
         return merchantMappers.modelToFullOutput(merchantGetUseCase.getById(id));
 
     }
+
 
 
     @GetMapping("/getById/{id}/{simpleOutput}")
@@ -98,6 +101,7 @@ public class MerchantController {
         }
 
     }
+
 
 
     @PutMapping("/update")
@@ -118,6 +122,7 @@ public class MerchantController {
     }
 
 
+
     @GetMapping("/getMerchants")
     @ApiOperation(value = "Obtener todos los merchants")
     public List<FullMerchantOutputDTO> getAllMerchants() {
@@ -131,6 +136,7 @@ public class MerchantController {
         return merchantOutputDTOList;
 
     }
+
 
 
     @DeleteMapping("/deleteMerchant/{id}")
@@ -150,35 +156,9 @@ public class MerchantController {
         );
     }
 
-    /*
-    @DeleteMapping("/deleteMerchant/{id}")
-    @ApiOperation(value = "Eliminar un merchant")
-    public GenericResponseEntity<MerchantOutputDTO> deleteMerchant(
-            @ApiParam(value = "ID del merchant a eliminar", required = true)
-            @PathVariable String id) {
 
 
-        MerchantOutputDTO deletedMerchant = merchantMappers.modelToOutput(merchantDeleteUseCase.delete(id));
-
-        if (deletedMerchant != null) {
-            return new GenericResponseEntity<MerchantOutputDTO>(
-                    "Merchant borrado con éxito.",
-                    String.valueOf(HttpStatus.NO_CONTENT.value()),
-                    deletedMerchant
-            );
-        } else {
-            return new GenericResponseEntity<MerchantOutputDTO>(
-                    "Merchant no encontrado.",
-                    String.valueOf(HttpStatus.NOT_FOUND.value()),
-                    null
-
-            );
-        }
-    }
-    */
-
-
-    @GetMapping("/getByClientId")
+    @PostMapping("/getByClientId")
     @ApiOperation(value = "Obtener todos los merchants de un cliente")
     public List<FullMerchantOutputDTO> getMerchantsByClientId(
             @ApiParam(value = "ID del cliente", required = true)
@@ -194,7 +174,6 @@ public class MerchantController {
 
     }
 
-    // TODO: Hacer un EP para devolver todos los tipos de merchant para refinar las partes involucradas en front
 
 
     @GetMapping("/types")
